@@ -1,3 +1,4 @@
+const moment = require("moment");
 const db = require("../models");
 const Tutorial = db.tutorials;
 
@@ -21,6 +22,10 @@ exports.create = (req, res) => {
     title: req.body.title,
     description: req.body.description,
     published: req.body.published ? req.body.published : false,
+    img: req.body.img,
+    url: req.body.url,
+    date: moment.utc(req.body.date),
+    newsOwner: req.body.newsOwner,
   });
 
   // Save Tutorial in the database
@@ -30,6 +35,7 @@ exports.create = (req, res) => {
       res.send(data);
     })
     .catch((err) => {
+      console.log(err.message);
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the Tutorial.",
@@ -46,7 +52,11 @@ exports.findAll = (req, res) => {
 
   const { limit, offset } = getPagination(page, size);
 
-  Tutorial.paginate(condition, { offset, limit })
+  Tutorial.paginate(condition, {
+    offset,
+    limit,
+    // sort: { date: -1 }
+  })
     .then((data) => {
       res.send({
         totalItems: data.totalDocs,
