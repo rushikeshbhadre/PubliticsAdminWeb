@@ -12,6 +12,7 @@ const getPagination = (page, size) => {
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
   // Validate request
+  res.header("Access-Control-Allow-Origin", "*");
   if (!req.body.title) {
     res.status(400).send({ message: "Content can not be empty!" });
     return;
@@ -45,6 +46,7 @@ exports.create = (req, res) => {
 
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   const { page, size, title } = req.query;
   var condition = title
     ? { title: { $regex: new RegExp(title), $options: "i" } }
@@ -75,6 +77,7 @@ exports.findAll = (req, res) => {
 
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   const id = req.params.id;
 
   Tutorial.findById(id)
@@ -92,6 +95,7 @@ exports.findOne = (req, res) => {
 
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   if (!req.body) {
     return res.status(400).send({
       message: "Data to update can not be empty!",
@@ -117,6 +121,7 @@ exports.update = (req, res) => {
 
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   const id = req.params.id;
 
   Tutorial.findByIdAndRemove(id, { useFindAndModify: false })
@@ -140,6 +145,7 @@ exports.delete = (req, res) => {
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   Tutorial.deleteMany({})
     .then((data) => {
       res.send({
@@ -156,6 +162,7 @@ exports.deleteAll = (req, res) => {
 
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   const { page, size } = req.query;
   const { limit, offset } = getPagination(page, size);
 
