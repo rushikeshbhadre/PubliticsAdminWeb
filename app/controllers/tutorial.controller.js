@@ -25,7 +25,7 @@ exports.create = (req, res) => {
     published: req.body.published ? req.body.published : false,
     img: req.body.img,
     url: req.body.url,
-    date: moment.utc(req.body.date),
+    date: req.body.date,
     newsOwner: req.body.newsOwner,
   });
 
@@ -57,7 +57,7 @@ exports.findAll = (req, res) => {
   Tutorial.paginate(condition, {
     offset,
     limit,
-    // sort: { date: -1 }
+    sort: { date: -1 },
   })
     .then((data) => {
       res.send({
